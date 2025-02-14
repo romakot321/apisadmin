@@ -36,18 +36,19 @@ class BaseMixin:
     updated_at: M[dt.datetime | None] = column(nullable=True, onupdate=sql_utcnow)
 
 
-class TaskItem(Base):
-    __tablename__ = "task_items"
-
-    id: M[int] = column(primary_key=True, index=True, autoincrement=True)
-    task_id: M[UUID] = column(ForeignKey('tasks.id', ondelete="CASCADE"))
-    result: M[str | None] = column(nullable=True)
-
-    task: M['Task'] = relationship(back_populates='items')
+class API(BaseMixin, Base):
+    documentation_url: M[str]
+    adminpanel_url: M[str]
+    description: M[str]
+    price_per_month: M[int]
 
 
-class Task(BaseMixin, Base):
-    error: M[str | None] = column(nullable=True)
+class ApplicationAPI(BaseMixin, Base):
+    api_id: M[UUID] = column(ForeignKey("apis.id", ondelete="CASCADE"))
+    application_id: M[UUID] = column(ForeignKey("applications", ondelete="CASCADE"))
+    api_token: M[str | None]
 
-    items: M[list['TaskItem']] = relationship(back_populates='task')
+
+class Application(BaseMixin, Base):
+    number: M[str]
 

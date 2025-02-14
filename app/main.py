@@ -52,7 +52,8 @@ def init_web_application():
         register_exception(application)
         register_cors(application)
 
-    from app.routes.task import router as task_router
+    from app.routes.web import router as web_router
+    from app.routes.api import router as api_router
 
     application.include_router(task_router)
 
